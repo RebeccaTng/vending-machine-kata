@@ -6,11 +6,10 @@ import java.util.List;
 public class VendingMachine {
 
     private float currentAmount;
-    private final List<String> validCoinTypes = List.of("nickel", "dime", "quarter");
 
     public void accept(Coin coin) {
-        if(validCoinTypes.contains(coin.type)) {
-            currentAmount += coin.value;
+        if(coin.validateCoin()) {
+            currentAmount += coin.getValue();
         } else {
             reject(coin);
         }

@@ -2,24 +2,28 @@ package org.example;
 
 public class Coin {
     float weightInGrams;
-    float size;
-    float value;
+    float sizeInInch;
     String type;
+    float value;
 
-    public Coin(float weightInGrams, float sizeInInches) {
-        this.weightInGrams = weightInGrams;
-        this.size = sizeInInches;
-        this.type = determineType();
-        this.value = determineValue();
+    public Coin(float weightInGram, float sizeInInch) {
+        this.weightInGrams = weightInGram;
+        this.sizeInInch = sizeInInch;
     }
 
-    public float determineValue() {
-        // some calculation
-        return 0.05f;
+    public boolean validateCoin() {
+        for(var coinType : AcceptedCoinTypes.values()) {
+            if (coinType.getWeight() == weightInGrams && coinType.getSize() == sizeInInch) {
+                type = coinType.name().toLowerCase();
+                value = coinType.getValue();
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    public String determineType() {
-        //
-        return "nickel";
+    public float getValue() {
+        return value;
     }
 }

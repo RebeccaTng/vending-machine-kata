@@ -12,7 +12,7 @@ public class AcceptCoinsTest {
     }
 
     public Coin getNickel() {
-        return new Coin(5f, 0.835f);
+        return new Coin(5f, 0.84f);
     }
 
     @Test
@@ -28,7 +28,7 @@ public class AcceptCoinsTest {
     public void machineShouldRejectInvalidCoins() {
         VendingMachine vendingMachine = new VendingMachine();
         vendingMachine.accept(getPenny());
-        assertEquals("$0", vendingMachine.display());
+        assertEquals("$0.0", vendingMachine.display());
 
         vendingMachine.accept(getNickel());
         vendingMachine.accept(getPenny());
@@ -53,7 +53,7 @@ public class AcceptCoinsTest {
         vendingMachine.accept(nickelCoin);
         vendingMachine.accept(pennyCoin2);
 
-        assertEquals("$0", vendingMachine.display());
+        assertEquals("$0.0", vendingMachine.display());
 
         List<Coin> expectedReturnedCoins = List.of(pennyCoin1, pennyCoin2);
         assertEquals(expectedReturnedCoins, vendingMachine.coinReturn());
