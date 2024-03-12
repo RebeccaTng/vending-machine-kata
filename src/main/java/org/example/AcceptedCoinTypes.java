@@ -2,7 +2,7 @@ package org.example;
 
 public enum AcceptedCoinTypes {
     // PENNY(2.5f, 0.75f, 0.01f),
-    NICKEL(5f, 0.84f, 0.05f),
+    NICKEL(5.0f, 0.84f, 0.05f),
     DIME(2.3f, 0.7f, 0.1f),
     QUARTER(5.7f, 1f, 0.25f);
 

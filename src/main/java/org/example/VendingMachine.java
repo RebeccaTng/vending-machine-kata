@@ -20,6 +20,7 @@ public class VendingMachine {
     }
 
     public String display() {
+        if (currentAmount == 0.0f) return "INSERT COIN";
         return "$" + currentAmount;
     }
 
