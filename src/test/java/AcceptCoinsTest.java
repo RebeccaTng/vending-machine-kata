@@ -8,47 +8,41 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AcceptCoinsTest {
 
-    public Coin getPenny() {
-        return new Coin(2.5f, 0.75f);
-    }
-
-    public Coin getNickel() {
-        return new Coin(5.0f, 0.84f);
-    }
+    CoinHelper coinHelper = new CoinHelper();
 
     @Test
-    public void when_vendingMachineReceivesValidCoin_expect_coinAcceptedAndDisplayUpdated() {
+    public void given_validCoin_when_vendingMachineReceivesCoin_then_coinAcceptedAndDisplayUpdated() {
         VendingMachine vendingMachine = new VendingMachine(new CoinValidator(0.25f, 0.05f));
 
-        vendingMachine.accept(getNickel());
+        vendingMachine.accept(coinHelper.getNickel());
 
         assertEquals("$0.05", vendingMachine.display());
     }
 
     @Test
-    public void when_vendingMachineReceivesInvalidCoin_expect_displayRemainUnchanged() {
+    public void given_invalidCoin_when_vendingMachineReceivesCoin_then_displayRemainUnchanged() {
         VendingMachine vendingMachine = new VendingMachine(new CoinValidator(0.25f, 0.05f));
-        vendingMachine.accept(getPenny());
+        vendingMachine.accept(coinHelper.getPenny());
         assertEquals("INSERT COIN", vendingMachine.display());
 
-        vendingMachine.accept(getNickel());
-        vendingMachine.accept(getPenny());
+        vendingMachine.accept(coinHelper.getNickel());
+        vendingMachine.accept(coinHelper.getPenny());
         assertEquals("$0.05", vendingMachine.display());
     }
 
     @Test
-    public void when_noCoinsInserted_expect_showInsertCoinOnDisplay() {
+    public void given_noCoins_when_vendingMachineUsed_then_showInsertCoinOnDisplay() {
         VendingMachine vendingMachine = new VendingMachine(new CoinValidator(0.25f, 0.05f));
 
         assertEquals("INSERT COIN", vendingMachine.display());
     }
 
     @Test
-    public void when_vendingMachineReceivesInvalidCoin_expect_coinReturnedInCoinReturn() {
+    public void given_invalidCoin_when_vendingMachineReceivesCoin_then_coinReturnedInCoinReturn() {
         VendingMachine vendingMachine = new VendingMachine(new CoinValidator(0.25f, 0.05f));
-        Coin pennyCoin1 = getPenny();
-        Coin pennyCoin2 = getPenny();
-        Coin nickelCoin = getNickel();
+        Coin pennyCoin1 = coinHelper.getPenny();
+        Coin pennyCoin2 = coinHelper.getPenny();
+        Coin nickelCoin = coinHelper.getNickel();
 
         vendingMachine.accept(pennyCoin1);
         vendingMachine.accept(nickelCoin);
