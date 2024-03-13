@@ -27,4 +27,15 @@ public enum AcceptedCoinTypes {
     public float getWeight() {
         return weight;
     }
+
+    public abstract static class DisplayState {
+
+        protected VendingMachine vendingMachine;
+
+        public DisplayState(VendingMachine vendingMachine) {
+            this.vendingMachine = vendingMachine;
+        }
+
+        abstract String getDisplayValue();
+    }
 }

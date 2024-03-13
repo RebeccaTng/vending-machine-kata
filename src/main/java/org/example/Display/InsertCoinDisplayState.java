@@ -1,6 +1,9 @@
-package org.example;
+package org.example.Display;
 
-public class InsertCoinDisplayState extends DisplayState{
+import org.example.AcceptedCoinTypes;
+import org.example.VendingMachine;
+
+public class InsertCoinDisplayState extends AcceptedCoinTypes.DisplayState {
 
     public InsertCoinDisplayState(VendingMachine vendingMachine) {
         super(vendingMachine);

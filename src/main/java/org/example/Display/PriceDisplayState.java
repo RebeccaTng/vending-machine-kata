@@ -1,6 +1,9 @@
-package org.example;
+package org.example.Display;
 
-public class PriceDisplayState extends DisplayState {
+import org.example.AcceptedCoinTypes;
+import org.example.VendingMachine;
+
+public class PriceDisplayState extends AcceptedCoinTypes.DisplayState {
     private float price;
 
     public PriceDisplayState(VendingMachine vendingMachine, float price) {

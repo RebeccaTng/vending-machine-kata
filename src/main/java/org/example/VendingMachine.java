@@ -1,5 +1,10 @@
 package org.example;
 
+import org.example.Display.CurrentAmountDisplayState;
+import org.example.Display.InsertCoinDisplayState;
+import org.example.Display.PriceDisplayState;
+import org.example.Display.ThankYouDisplayState;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +15,7 @@ public class VendingMachine {
     private final CoinValidator coinValidator;
     private Map<Products, Integer> availableProducts;
     private List<Coin> returnedCoins = new ArrayList<>();
-    private DisplayState displayState;
+    private AcceptedCoinTypes.DisplayState displayState;
 
     public VendingMachine(CoinValidator coinValidator, Map<Products, Integer> availableProducts) {
         this.coinValidator = coinValidator;
@@ -46,7 +51,7 @@ public class VendingMachine {
         return displayState.getDisplayValue();
     }
 
-    public void changeDisplayState(DisplayState displayState) {
+    public void changeDisplayState(AcceptedCoinTypes.DisplayState displayState) {
         this.displayState = displayState;
     }
 
