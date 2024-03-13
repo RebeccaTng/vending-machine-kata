@@ -18,21 +18,16 @@ public class VendingMachine {
         displayState = new InsertCoinDisplayState(this);
     }
 
-    public void accept(Coin coin) {
+    public void insert(Coin coin) {
         AcceptedCoinTypes validatedCoin = coinValidator.validateCoin(coin);
-        if(validatedCoin == null ) {
-            reject(coin);
+        if(validatedCoin != null ) {
+            accept(validatedCoin);
         } else {
-            currentAmount += validatedCoin.getValue();
-            changeDisplayState(new CurrentAmountDisplayState(this));
+            reject(coin);
         }
     }
 
-    public void reject(Coin coin) {
-        returnedCoins.add(coin);
-    }
-
-    public List<Coin> coinReturn() {
+    public List<Coin> checkCoinReturn() {
         return returnedCoins;
     }
 
@@ -47,15 +42,24 @@ public class VendingMachine {
         }
     }
 
-    public void changeDisplayState(DisplayState displayState) {
-        this.displayState = displayState;
-    }
-
     public String seeDisplay() {
         return displayState.getDisplayValue();
     }
 
+    public void changeDisplayState(DisplayState displayState) {
+        this.displayState = displayState;
+    }
+
     public float getCurrentAmount() {
         return currentAmount;
+    }
+
+    private void accept(AcceptedCoinTypes coin) {
+        currentAmount += coin.getValue();
+        changeDisplayState(new CurrentAmountDisplayState(this));
+    }
+
+    private void reject(Coin coin) {
+        returnedCoins.add(coin);
     }
 }

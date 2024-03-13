@@ -28,7 +28,7 @@ public class AcceptCoinsTest {
     public void given_validCoin_when_vendingMachineReceivesCoin_then_coinAcceptedAndDisplayUpdated() {
         VendingMachine vendingMachine = getBasicVendingMachine();
 
-        vendingMachine.accept(coinHelper.getNickel());
+        vendingMachine.insert(coinHelper.getNickel());
 
         assertEquals("$0.05", vendingMachine.seeDisplay());
     }
@@ -36,11 +36,11 @@ public class AcceptCoinsTest {
     @Test
     public void given_invalidCoin_when_vendingMachineReceivesCoin_then_displayRemainUnchanged() {
         VendingMachine vendingMachine = getBasicVendingMachine();
-        vendingMachine.accept(coinHelper.getPenny());
+        vendingMachine.insert(coinHelper.getPenny());
         assertEquals("INSERT COIN", vendingMachine.seeDisplay());
 
-        vendingMachine.accept(coinHelper.getNickel());
-        vendingMachine.accept(coinHelper.getPenny());
+        vendingMachine.insert(coinHelper.getNickel());
+        vendingMachine.insert(coinHelper.getPenny());
         assertEquals("$0.05", vendingMachine.seeDisplay());
     }
 
@@ -58,13 +58,13 @@ public class AcceptCoinsTest {
         Coin pennyCoin2 = coinHelper.getPenny();
         Coin nickelCoin = coinHelper.getNickel();
 
-        vendingMachine.accept(pennyCoin1);
-        vendingMachine.accept(nickelCoin);
-        vendingMachine.accept(pennyCoin2);
+        vendingMachine.insert(pennyCoin1);
+        vendingMachine.insert(nickelCoin);
+        vendingMachine.insert(pennyCoin2);
 
         assertEquals("$0.05", vendingMachine.seeDisplay());
 
         List<Coin> expectedReturnedCoins = List.of(pennyCoin1, pennyCoin2);
-        assertEquals(expectedReturnedCoins, vendingMachine.coinReturn());
+        assertEquals(expectedReturnedCoins, vendingMachine.checkCoinReturn());
     }
 }

@@ -26,8 +26,8 @@ public class SelectProductTest {
     public void given_enoughMoney_when_selectProduct_then_displayShowsThankYou() {
         VendingMachine vendingMachine = getBasicVendingMachine();
 
-        vendingMachine.accept(coinHelper.getQuarter());
-        vendingMachine.accept(coinHelper.getQuarter());
+        vendingMachine.insert(coinHelper.getQuarter());
+        vendingMachine.insert(coinHelper.getQuarter());
         vendingMachine.selectProduct(Products.CHIPS);
 
         assertEquals("THANK YOU", vendingMachine.seeDisplay());
@@ -37,8 +37,8 @@ public class SelectProductTest {
     public void given_productBought_when_checkDisplay_then_displayShowInsertCoin() {
         VendingMachine vendingMachine = getBasicVendingMachine();
 
-        vendingMachine.accept(coinHelper.getQuarter());
-        vendingMachine.accept(coinHelper.getQuarter());
+        vendingMachine.insert(coinHelper.getQuarter());
+        vendingMachine.insert(coinHelper.getQuarter());
         vendingMachine.selectProduct(Products.CHIPS);
         vendingMachine.seeDisplay();
 
@@ -68,7 +68,7 @@ public class SelectProductTest {
     public void given_tooLittleMoneyInVendingMachine_when_checkDisplayAfterProductSelectFailed_then_showCurrentAmountOfMoneyInVendingMachine() {
         VendingMachine vendingMachine = getBasicVendingMachine();
 
-        vendingMachine.accept(coinHelper.getQuarter());
+        vendingMachine.insert(coinHelper.getQuarter());
         vendingMachine.selectProduct(Products.CHIPS);
         vendingMachine.seeDisplay();
 
