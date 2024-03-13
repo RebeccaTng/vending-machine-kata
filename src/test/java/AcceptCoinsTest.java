@@ -17,7 +17,7 @@ public class AcceptCoinsTest {
     }
 
     @Test
-    public void machineShouldAcceptValidCoins() {
+    public void when_vendingMachineReceivesValidCoin_expect_coinAcceptedAndDisplayUpdated() {
         VendingMachine vendingMachine = new VendingMachine(new CoinValidator(0.25f, 0.05f));
 
         vendingMachine.accept(getNickel());
@@ -26,7 +26,7 @@ public class AcceptCoinsTest {
     }
 
     @Test
-    public void machineShouldRejectInvalidCoins() {
+    public void when_vendingMachineReceivesInvalidCoin_expect_displayRemainUnchanged() {
         VendingMachine vendingMachine = new VendingMachine(new CoinValidator(0.25f, 0.05f));
         vendingMachine.accept(getPenny());
         assertEquals("INSERT COIN", vendingMachine.display());
@@ -37,14 +37,14 @@ public class AcceptCoinsTest {
     }
 
     @Test
-    public void machineShouldDisplayNoCoinsWhenNoCoinsInserted() {
+    public void when_noCoinsInserted_expect_showInsertCoinOnDisplay() {
         VendingMachine vendingMachine = new VendingMachine(new CoinValidator(0.25f, 0.05f));
 
         assertEquals("INSERT COIN", vendingMachine.display());
     }
 
     @Test
-    public void rejectedCoinsShouldBeInCoinReturn() {
+    public void when_vendingMachineReceivesInvalidCoin_expect_coinReturnedInCoinReturn() {
         VendingMachine vendingMachine = new VendingMachine(new CoinValidator(0.25f, 0.05f));
         Coin pennyCoin1 = getPenny();
         Coin pennyCoin2 = getPenny();
