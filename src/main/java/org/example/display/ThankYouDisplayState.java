@@ -1,4 +1,6 @@
-package org.example;
+package org.example.display;
+
+import org.example.VendingMachine;
 
 public class ThankYouDisplayState extends DisplayState {
 
@@ -7,7 +9,7 @@ public class ThankYouDisplayState extends DisplayState {
     }
 
     @Override
-    String getDisplayValue() {
+    public String getDisplayValue() {
         vendingMachine.changeDisplayState(new InsertCoinDisplayState(vendingMachine));
         return "THANK YOU";
     }

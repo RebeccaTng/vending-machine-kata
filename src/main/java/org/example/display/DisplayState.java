@@ -1,4 +1,6 @@
-package org.example;
+package org.example.display;
+
+import org.example.VendingMachine;
 
 public abstract class DisplayState {
 
@@ -8,5 +10,5 @@ public abstract class DisplayState {
         this.vendingMachine = vendingMachine;
     }
 
-    abstract String getDisplayValue();
+    public abstract String getDisplayValue();
 }

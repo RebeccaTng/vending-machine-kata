@@ -1,4 +1,6 @@
-package org.example;
+package org.example.display;
+
+import org.example.VendingMachine;
 
 public class PriceDisplayState extends DisplayState {
     private float price;
@@ -9,7 +11,7 @@ public class PriceDisplayState extends DisplayState {
     }
 
     @Override
-    String getDisplayValue() {
+    public String getDisplayValue() {
         if(vendingMachine.getCurrentAmount() == 0) {
             vendingMachine.changeDisplayState(new InsertCoinDisplayState(vendingMachine));
         } else {

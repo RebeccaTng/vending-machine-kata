@@ -1,4 +1,6 @@
-package org.example;
+package org.example.display;
+
+import org.example.VendingMachine;
 
 public class CurrentAmountDisplayState extends DisplayState {
 
@@ -7,7 +9,7 @@ public class CurrentAmountDisplayState extends DisplayState {
     }
 
     @Override
-    String getDisplayValue() {
+    public String getDisplayValue() {
         return "$" + vendingMachine.getCurrentAmount();
     }
 }
