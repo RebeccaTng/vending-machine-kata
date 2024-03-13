@@ -7,6 +7,7 @@ public class VendingMachine {
 
     private float currentAmount;
     private CoinValidator coinValidator;
+    private List<Coin> returnedCoins = new ArrayList<>();
 
     public VendingMachine(CoinValidator coinValidator) {
         this.coinValidator = coinValidator;
@@ -22,7 +23,7 @@ public class VendingMachine {
     }
 
     public void reject(Coin coin) {
-
+        returnedCoins.add(coin);
     }
 
     public String display() {
@@ -31,6 +32,6 @@ public class VendingMachine {
     }
 
     public List<Coin> coinReturn() {
-        return new ArrayList<>();
+        return returnedCoins;
     }
 }
