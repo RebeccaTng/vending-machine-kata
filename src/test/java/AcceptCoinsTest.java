@@ -3,6 +3,8 @@ import org.example.CoinValidator;
 import org.example.Products;
 import org.example.VendingMachine;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,11 +16,11 @@ public class AcceptCoinsTest {
 
     private VendingMachine getBasicVendingMachine() {
         CoinValidator coinValidator = new CoinValidator(0.25f, 0.05f);
-        Map<Products, Integer> availableProducts = Map.ofEntries(
+        Map<Products, Integer> availableProducts = new HashMap<>(Map.ofEntries(
                 Map.entry(Products.COLA, 10),
                 Map.entry(Products.CANDY, 5),
                 Map.entry(Products.CHIPS, 1)
-        );
+        ));
         return new VendingMachine(coinValidator, availableProducts);
     }
 
@@ -28,25 +30,25 @@ public class AcceptCoinsTest {
 
         vendingMachine.accept(coinHelper.getNickel());
 
-        assertEquals("$0.05", vendingMachine.display());
+        assertEquals("$0.05", vendingMachine.seeDisplay());
     }
 
     @Test
     public void given_invalidCoin_when_vendingMachineReceivesCoin_then_displayRemainUnchanged() {
         VendingMachine vendingMachine = getBasicVendingMachine();
         vendingMachine.accept(coinHelper.getPenny());
-        assertEquals("INSERT COIN", vendingMachine.display());
+        assertEquals("INSERT COIN", vendingMachine.seeDisplay());
 
         vendingMachine.accept(coinHelper.getNickel());
         vendingMachine.accept(coinHelper.getPenny());
-        assertEquals("$0.05", vendingMachine.display());
+        assertEquals("$0.05", vendingMachine.seeDisplay());
     }
 
     @Test
     public void given_noCoins_when_vendingMachineUsed_then_showInsertCoinOnDisplay() {
         VendingMachine vendingMachine = getBasicVendingMachine();
 
-        assertEquals("INSERT COIN", vendingMachine.display());
+        assertEquals("INSERT COIN", vendingMachine.seeDisplay());
     }
 
     @Test
@@ -60,7 +62,7 @@ public class AcceptCoinsTest {
         vendingMachine.accept(nickelCoin);
         vendingMachine.accept(pennyCoin2);
 
-        assertEquals("$0.05", vendingMachine.display());
+        assertEquals("$0.05", vendingMachine.seeDisplay());
 
         List<Coin> expectedReturnedCoins = List.of(pennyCoin1, pennyCoin2);
         assertEquals(expectedReturnedCoins, vendingMachine.coinReturn());
