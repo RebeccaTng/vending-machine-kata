@@ -6,12 +6,18 @@ import java.util.List;
 public class VendingMachine {
 
     private float currentAmount;
+    private CoinValidator coinValidator;
+
+    public VendingMachine(CoinValidator coinValidator) {
+        this.coinValidator = coinValidator;
+    }
 
     public void accept(Coin coin) {
-        if(coin.validateCoin()) {
-            currentAmount += coin.getValue();
-        } else {
+        AcceptedCoinTypes validatedCoin = coinValidator.validateCoin(coin);
+        if(validatedCoin == null ) {
             reject(coin);
+        } else {
+            currentAmount += validatedCoin.getValue();
         }
     }
 

@@ -1,4 +1,5 @@
 import org.example.Coin;
+import org.example.CoinValidator;
 import org.example.VendingMachine;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -17,7 +18,7 @@ public class AcceptCoinsTest {
 
     @Test
     public void machineShouldAcceptValidCoins() {
-        VendingMachine vendingMachine = new VendingMachine();
+        VendingMachine vendingMachine = new VendingMachine(new CoinValidator(0.5f, 0.05f));
 
         vendingMachine.accept(getNickel());
 
@@ -26,7 +27,7 @@ public class AcceptCoinsTest {
 
     @Test
     public void machineShouldRejectInvalidCoins() {
-        VendingMachine vendingMachine = new VendingMachine();
+        VendingMachine vendingMachine = new VendingMachine(new CoinValidator(0.5f, 0.05f));
         vendingMachine.accept(getPenny());
         assertEquals("INSERT COIN", vendingMachine.display());
 
@@ -37,14 +38,14 @@ public class AcceptCoinsTest {
 
     @Test
     public void machineShouldDisplayNoCoinsWhenNoCoinsInserted() {
-        VendingMachine vendingMachine = new VendingMachine();
+        VendingMachine vendingMachine = new VendingMachine(new CoinValidator(0.5f, 0.05f));
 
         assertEquals("INSERT COIN", vendingMachine.display());
     }
 
     @Test
     public void rejectedCoinsShouldBeInCoinReturn() {
-        VendingMachine vendingMachine = new VendingMachine();
+        VendingMachine vendingMachine = new VendingMachine(new CoinValidator(0.5f, 0.05f));
         Coin pennyCoin1 = getPenny();
         Coin pennyCoin2 = getPenny();
         Coin nickelCoin = getNickel();
@@ -53,7 +54,7 @@ public class AcceptCoinsTest {
         vendingMachine.accept(nickelCoin);
         vendingMachine.accept(pennyCoin2);
 
-        assertEquals("INSERT COIN", vendingMachine.display());
+        assertEquals("$0.05", vendingMachine.display());
 
         List<Coin> expectedReturnedCoins = List.of(pennyCoin1, pennyCoin2);
         assertEquals(expectedReturnedCoins, vendingMachine.coinReturn());
