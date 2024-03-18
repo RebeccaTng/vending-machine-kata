@@ -1,16 +1,13 @@
 import helpers.CoinHelper;
 import helpers.VendingMachineHelper;
 import org.example.Coin;
-import org.example.CoinValidator;
-import org.example.Products;
 import org.example.VendingMachine;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ReturnCoinsTest {
 
@@ -26,9 +23,12 @@ public class ReturnCoinsTest {
         vendingMachine.insert(nickelCoin2);
         vendingMachine.insert(dimeCoin);
         vendingMachine.insert(quarterCoin);
+        vendingMachine.returnCoins();
 
         List<Coin> expectedReturnedCoins = List.of(nickelCoin1, nickelCoin2, dimeCoin, quarterCoin);
-        assertEquals(expectedReturnedCoins, vendingMachine.returnCoins());
+        List<Coin> returnedCoins = vendingMachine.checkCoinReturn();
+        assertEquals(expectedReturnedCoins.size(), returnedCoins.size());
+        assertTrue(expectedReturnedCoins.containsAll(returnedCoins) && returnedCoins.containsAll(expectedReturnedCoins));
     }
 
     @Test

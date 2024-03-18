@@ -8,10 +8,10 @@ import java.util.*;
 public class VendingMachine {
 
     private final CoinValidator coinValidator;
-    private Map<Products, Integer> availableProducts;
+    private final Map<Products, Integer> availableProducts;
 
     private DisplayState displayState;
-    private Map<AcceptedCoinTypes, List<Coin>> currentCoins = new HashMap<>();
+    private final Map<AcceptedCoinTypes, List<Coin>> currentCoins = new HashMap<>();
 
     private DollarWrapper currentAmount = DollarWrapper.zero();
     private List<Coin> returnedCoins = new ArrayList<>();
@@ -57,6 +57,11 @@ public class VendingMachine {
 
     public String seeDisplay() {
         return displayState.getDisplayValue();
+    }
+
+    public void returnCoins() {
+        returnAllCoins();
+        displayState = new InsertCoinDisplayState(this);
     }
 
     /** FOR OTHER CLASSES **/
