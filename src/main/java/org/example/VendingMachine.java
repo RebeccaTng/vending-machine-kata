@@ -14,7 +14,7 @@ public class VendingMachine {
     private Map<AcceptedCoinTypes, List<Coin>> currentCoins = new HashMap<>();
 
     private DollarWrapper currentAmount = DollarWrapper.zero();
-    private final List<Coin> returnedCoins = new ArrayList<>();
+    private List<Coin> returnedCoins = new ArrayList<>();
 
     public VendingMachine(CoinValidator coinValidator, Map<Products, Integer> availableProducts) {
         this.coinValidator = coinValidator;
@@ -36,7 +36,9 @@ public class VendingMachine {
     }
 
     public List<Coin> checkCoinReturn() {
-        return returnedCoins;
+        List<Coin> coinsToReturn = returnedCoins;
+        returnedCoins = new ArrayList<>();
+        return coinsToReturn;
     }
 
     public void selectProduct(Products product) {
@@ -94,7 +96,7 @@ public class VendingMachine {
 
         if(currentAmount.greaterThan(0)) {
             returnAllCoins();
-        };
+        }
     }
 
     private void returnAllCoins() {
