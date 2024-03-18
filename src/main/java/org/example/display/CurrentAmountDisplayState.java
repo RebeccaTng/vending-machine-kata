@@ -10,6 +10,6 @@ public class CurrentAmountDisplayState extends DisplayState {
 
     @Override
     public String getDisplayValue() {
-        return "$" + vendingMachine.getCurrentAmount();
+        return vendingMachine.getCurrentAmount().asDollarString();
     }
 }

@@ -19,40 +19,43 @@ public class DollarWrapper {
         this.value = value.setScale(2, RoundingMode.HALF_DOWN);
     }
 
-    public DollarWrapper valueOf(String amountString) {
+    public static DollarWrapper valueOf(String amountString) {
         if(amountString == null || amountString.isEmpty()) {
             throw new IllegalArgumentException("A monetary value is required");
         }
 
-        if(amountString.startsWith("S")) {
+        if(amountString.startsWith("$")) {
             amountString = amountString.substring(amountString.indexOf("$") + 1);
         }
 
-        return new DollarWrapper(new BigDecimal(amountString));
+        return new DollarWrapper(new BigDecimal(amountString).setScale(2, RoundingMode.HALF_DOWN));
     }
 
-    public DollarWrapper zero() {
+    public static DollarWrapper zero() {
         return new DollarWrapper(0);
     }
 
-    public DollarWrapper addDollar(DollarWrapper amount) {
+    public DollarWrapper add(DollarWrapper amount) {
         return new DollarWrapper(value.add(amount.value));
     }
 
-    public DollarWrapper subtractDollar(DollarWrapper amount) {
-        return new DollarWrapper(value.subtract(amount.value));
+    public DollarWrapper subtract(DollarWrapper amount) {
+        return new DollarWrapper(value.subtract(amount.value));    }
+
+    public double dividedBy(DollarWrapper amount) {
+        return value.divide(amount.value, RoundingMode.HALF_DOWN).doubleValue();
     }
 
-    public double divideByDouble(double amount) {
-        return value.divide(BigDecimal.valueOf(amount), RoundingMode.HALF_DOWN).doubleValue();
-    }
-
-    public boolean greaterThanDollar(DollarWrapper amount) {
-        return value.compareTo(amount.value) > 0;
-    }
-
-    public boolean greaterThanDouble(double amount) {
+    public boolean greaterThan(double amount) {
         return value.doubleValue() > amount;
+    }
+
+    public boolean greaterThanOrEquals(DollarWrapper amount) {
+        return value.compareTo(amount.value) >= 0;
+    }
+
+    public boolean equalsTo(double amount) {
+        return value.doubleValue() == amount;
     }
 
     public double asDouble() {

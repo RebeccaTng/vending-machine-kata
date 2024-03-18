@@ -1,6 +1,7 @@
 import org.example.CoinValidator;
 import org.example.Products;
 import org.example.VendingMachine;
+import org.example.money.DollarWrapper;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class SelectProductTest {
 
         vendingMachine.selectProduct(Products.CHIPS);
 
-        assertEquals("$0.5", vendingMachine.seeDisplay());
+        assertEquals("$0.50", vendingMachine.seeDisplay());
     }
 
     @Test

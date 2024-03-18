@@ -25,7 +25,7 @@ public class MakeChangeTest {
     private double calculateSumOfReturn(List<Coin> returnedCoins) {
         return returnedCoins.stream()
                 .map(coinValidator::validateCoin)
-                .mapToDouble(validatedCoin -> validatedCoin != null ? validatedCoin.getValue() : 0)
+                .mapToDouble(validatedCoin -> validatedCoin != null ? validatedCoin.getValue().asDouble() : 0)
                 .sum();
     }
 

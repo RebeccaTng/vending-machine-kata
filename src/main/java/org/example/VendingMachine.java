@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.display.*;
+import org.example.money.DollarWrapper;
 
 import java.util.*;
 
@@ -12,7 +13,7 @@ public class VendingMachine {
     private DisplayState displayState;
     private Map<AcceptedCoinTypes, List<Coin>> currentCoins = new HashMap<>();
 
-    private float currentAmount;
+    private DollarWrapper currentAmount = DollarWrapper.zero();
     private final List<Coin> returnedCoins = new ArrayList<>();
 
     public VendingMachine(CoinValidator coinValidator, Map<Products, Integer> availableProducts) {
@@ -39,8 +40,8 @@ public class VendingMachine {
     }
 
     public void selectProduct(Products product) {
-        float price = product.getPrice();
-        if(currentAmount >= price) {
+        DollarWrapper price = product.getPrice();
+        if(currentAmount.greaterThanOrEquals(price)) {
             int availableAmount = availableProducts.get(product);
             if(availableAmount > 0) {
                 availableProducts.put(product, availableAmount - 1);
@@ -61,14 +62,14 @@ public class VendingMachine {
         this.displayState = displayState;
     }
 
-    public float getCurrentAmount() {
+    public DollarWrapper getCurrentAmount() {
         return currentAmount;
     }
 
     /** PRIVATE HELPER FUNCTIONS **/
     private void accept(AcceptedCoinTypes validatedCoin, Coin coin) {
         currentCoins.get(validatedCoin).add(coin);
-        currentAmount += validatedCoin.getValue();
+        currentAmount = currentAmount.add(validatedCoin.getValue());
         changeDisplayState(new CurrentAmountDisplayState(this));
     }
 
@@ -76,22 +77,22 @@ public class VendingMachine {
         returnedCoins.add(coin);
     }
 
-    private void handlePriceDeduction(float price) {
-        currentAmount -= price;
+    private void handlePriceDeduction(DollarWrapper price) {
+        currentAmount = currentAmount.subtract(price);
         AcceptedCoinTypes[] sortedCoinTypes = AcceptedCoinTypes.values();
-        Arrays.sort(sortedCoinTypes, Comparator.comparing(AcceptedCoinTypes::getValue).reversed());
+        Arrays.sort(sortedCoinTypes, Comparator.comparingDouble(type -> ((AcceptedCoinTypes) type).getValue().asDouble()).reversed());
 
         for(AcceptedCoinTypes coinType : sortedCoinTypes) {
-            int neededCoins = (int) Math.floor(price/coinType.getValue());
+            int neededCoins = (int) Math.floor(price.dividedBy(coinType.getValue()));
             List<Coin> availableCoins = currentCoins.get(coinType);
 
             for(int i = 0; !availableCoins.isEmpty() && i < neededCoins; i++) {
                 availableCoins.remove(0);
-                price -= coinType.getValue();
+                price = price.subtract(coinType.getValue());
             }
         }
 
-        if(currentAmount > 0) {
+        if(currentAmount.greaterThan(0)) {
             returnAllCoins();
         };
     }
