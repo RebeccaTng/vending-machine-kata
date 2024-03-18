@@ -47,10 +47,11 @@ public class MakeChangeTest {
         for (int i = 0; i < 10 ; i++) {
             vendingMachine.insert(coinHelper.getDime());
         }
-        vendingMachine.insert(coinHelper.getNickel());
-        vendingMachine.insert(coinHelper.getNickel());
+        for (int i = 0; i < 5 ; i++) {
+            vendingMachine.insert(coinHelper.getNickel());
+        }
         vendingMachine.selectProduct(Products.COLA);
 
-        assertEquals(0.35, calculateSumOfReturn(vendingMachine.checkCoinReturn()));
+        assertEquals(0.5, calculateSumOfReturn(vendingMachine.checkCoinReturn()));
     }
 }
