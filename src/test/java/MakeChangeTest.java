@@ -49,6 +49,7 @@ public class MakeChangeTest {
         }
         vendingMachine.insert(coinHelper.getNickel());
         vendingMachine.insert(coinHelper.getNickel());
+        vendingMachine.selectProduct(Products.COLA);
 
         assertEquals(0.35, calculateSumOfReturn(vendingMachine.checkCoinReturn()));
     }
