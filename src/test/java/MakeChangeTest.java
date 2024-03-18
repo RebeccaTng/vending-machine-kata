@@ -29,7 +29,7 @@ public class MakeChangeTest {
         List<Coin> returnedCoins = vendingMachine.checkCoinReturn();
         assertEquals(0.25, returnedCoins.stream()
                                     .map(coinValidator::validateCoin)
-                                    .mapToDouble(AcceptedCoinTypes::getValue)
+                                    .mapToDouble(validatedCoin -> validatedCoin != null ? validatedCoin.getValue() : 0)
                                     .sum());
     }
 }
