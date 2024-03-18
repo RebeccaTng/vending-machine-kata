@@ -2,28 +2,33 @@ package org.example;
 
 import org.example.display.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class VendingMachine {
 
-    private float currentAmount;
     private final CoinValidator coinValidator;
     private Map<Products, Integer> availableProducts;
-    private List<Coin> returnedCoins = new ArrayList<>();
+
     private DisplayState displayState;
+    private Map<AcceptedCoinTypes, List<Coin>> currentCoins = new HashMap<>();
+
+    private float currentAmount;
+    private final List<Coin> returnedCoins = new ArrayList<>();
 
     public VendingMachine(CoinValidator coinValidator, Map<Products, Integer> availableProducts) {
         this.coinValidator = coinValidator;
         this.availableProducts = availableProducts;
         displayState = new InsertCoinDisplayState(this);
+        for (AcceptedCoinTypes c : AcceptedCoinTypes.values()) {
+            currentCoins.put(c, new ArrayList<>());
+        }
     }
 
+    /** AVAILABLE TO USER **/
     public void insert(Coin coin) {
         AcceptedCoinTypes validatedCoin = coinValidator.validateCoin(coin);
         if(validatedCoin != null ) {
-            accept(validatedCoin);
+            accept(validatedCoin, coin);
         } else {
             returnCoin(coin);
         }
@@ -36,9 +41,12 @@ public class VendingMachine {
     public void selectProduct(Products product) {
         float price = product.getPrice();
         if(currentAmount >= price) {
-            availableProducts.put(product, availableProducts.get(product) - 1);
-            currentAmount -= price;
-            changeDisplayState(new ThankYouDisplayState(this));
+            int availableAmount = availableProducts.get(product);
+            if(availableAmount > 0) {
+                availableProducts.put(product, availableAmount - 1);
+                handlePriceDeduction(price);
+                changeDisplayState(new ThankYouDisplayState(this));
+            }
         } else {
             changeDisplayState(new PriceDisplayState(this, price));
         }
@@ -48,6 +56,7 @@ public class VendingMachine {
         return displayState.getDisplayValue();
     }
 
+    /** FOR OTHER CLASSES **/
     public void changeDisplayState(DisplayState displayState) {
         this.displayState = displayState;
     }
@@ -56,12 +65,41 @@ public class VendingMachine {
         return currentAmount;
     }
 
-    private void accept(AcceptedCoinTypes coin) {
-        currentAmount += coin.getValue();
+    /** PRIVATE HELPER FUNCTIONS **/
+    private void accept(AcceptedCoinTypes validatedCoin, Coin coin) {
+        currentCoins.get(validatedCoin).add(coin);
+        currentAmount += validatedCoin.getValue();
         changeDisplayState(new CurrentAmountDisplayState(this));
     }
 
     private void returnCoin(Coin coin) {
         returnedCoins.add(coin);
+    }
+
+    private void handlePriceDeduction(float price) {
+        currentAmount -= price;
+        AcceptedCoinTypes[] sortedCoinTypes = AcceptedCoinTypes.values();
+        Arrays.sort(sortedCoinTypes, Comparator.comparing(AcceptedCoinTypes::getValue).reversed());
+
+        for(AcceptedCoinTypes coinType : sortedCoinTypes) {
+            int neededCoins = (int) Math.floor(price/coinType.getValue());
+            List<Coin> availableCoins = currentCoins.get(coinType);
+
+            for(int i = 0; !availableCoins.isEmpty() && i < neededCoins; i++) {
+                availableCoins.remove(0);
+                price -= coinType.getValue();
+            }
+        }
+
+        if(currentAmount > 0) {
+            returnAllCoins();
+        };
+    }
+
+    private void returnAllCoins() {
+        for(List<Coin> coins : currentCoins.values()) {
+            returnedCoins.addAll(coins);
+            coins.clear();
+        }
     }
 }
