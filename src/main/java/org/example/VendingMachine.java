@@ -25,7 +25,7 @@ public class VendingMachine {
         if(validatedCoin != null ) {
             accept(validatedCoin);
         } else {
-            reject(coin);
+            returnCoin(coin);
         }
     }
 
@@ -61,7 +61,7 @@ public class VendingMachine {
         changeDisplayState(new CurrentAmountDisplayState(this));
     }
 
-    private void reject(Coin coin) {
+    private void returnCoin(Coin coin) {
         returnedCoins.add(coin);
     }
 }
