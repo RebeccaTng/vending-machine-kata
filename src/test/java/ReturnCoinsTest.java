@@ -1,3 +1,5 @@
+import helpers.CoinHelper;
+import helpers.VendingMachineHelper;
 import org.example.Coin;
 import org.example.CoinValidator;
 import org.example.Products;
@@ -12,25 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ReturnCoinsTest {
 
-    CoinHelper coinHelper = new CoinHelper();
-
-    private VendingMachine getBasicVendingMachine() {
-        CoinValidator coinValidator = new CoinValidator(0.25f, 0.05f);
-        Map<Products, Integer> availableProducts = new HashMap<>(Map.ofEntries(
-                Map.entry(Products.COLA, 10),
-                Map.entry(Products.CANDY, 5),
-                Map.entry(Products.CHIPS, 1)
-        ));
-        return new VendingMachine(coinValidator, availableProducts);
-    }
-
     @Test
     public void given_coinsInMachine_when_returnCoinsButtonPressed_then_returnAllCoins() {
-        VendingMachine vendingMachine = getBasicVendingMachine();
-        Coin nickelCoin1 = coinHelper.getNickel();
-        Coin nickelCoin2 = coinHelper.getNickel();
-        Coin dimeCoin = coinHelper.getDime();
-        Coin quarterCoin = coinHelper.getQuarter();
+        VendingMachine vendingMachine = VendingMachineHelper.getStockedVendingMachine();
+        Coin nickelCoin1 = CoinHelper.getNickel();
+        Coin nickelCoin2 = CoinHelper.getNickel();
+        Coin dimeCoin = CoinHelper.getDime();
+        Coin quarterCoin = CoinHelper.getQuarter();
 
         vendingMachine.insert(nickelCoin1);
         vendingMachine.insert(nickelCoin2);
@@ -43,11 +33,11 @@ public class ReturnCoinsTest {
 
     @Test
     public void given_coinsInMachine_when_returnCoinsButtonPressed_then_displayInsertCoin() {
-        VendingMachine vendingMachine = getBasicVendingMachine();
-        Coin nickelCoin1 = coinHelper.getNickel();
-        Coin nickelCoin2 = coinHelper.getNickel();
-        Coin dimeCoin = coinHelper.getDime();
-        Coin quarterCoin = coinHelper.getQuarter();
+        VendingMachine vendingMachine = VendingMachineHelper.getStockedVendingMachine();
+        Coin nickelCoin1 = CoinHelper.getNickel();
+        Coin nickelCoin2 = CoinHelper.getNickel();
+        Coin dimeCoin = CoinHelper.getDime();
+        Coin quarterCoin = CoinHelper.getQuarter();
 
         vendingMachine.insert(nickelCoin1);
         vendingMachine.insert(nickelCoin2);

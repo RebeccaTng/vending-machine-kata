@@ -1,3 +1,5 @@
+import helpers.CoinHelper;
+import helpers.VendingMachineHelper;
 import org.example.*;
 import org.junit.jupiter.api.Test;
 
@@ -10,18 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MakeChangeTest {
 
-    CoinHelper coinHelper = new CoinHelper();
     CoinValidator coinValidator = new CoinValidator(0.25f, 0.05f);
-
-    private VendingMachine getBasicVendingMachine() {
-        Map<Products, Integer> availableProducts = new HashMap<>(Map.ofEntries(
-                Map.entry(Products.COLA, 10),
-                Map.entry(Products.CANDY, 5),
-                Map.entry(Products.CHIPS, 1)
-        ));
-
-        return new VendingMachine(coinValidator, availableProducts);
-    }
 
     private double calculateSumOfReturn(List<Coin> returnedCoins) {
         return returnedCoins.stream()
@@ -30,12 +21,16 @@ public class MakeChangeTest {
                 .sum();
     }
 
+    private VendingMachine getStockedVendingMachine() {
+        return VendingMachineHelper.getStockedVendingMachine(coinValidator);
+    }
+
     @Test
     public void given_oneQuarterMoreThanProductPrice_when_selectProduct_then_RemainingCoinReturned() {
-        VendingMachine vendingMachine = getBasicVendingMachine();
-        vendingMachine.insert(coinHelper.getQuarter());
-        vendingMachine.insert(coinHelper.getQuarter());
-        vendingMachine.insert(coinHelper.getQuarter());
+        VendingMachine vendingMachine = getStockedVendingMachine();
+        vendingMachine.insert(CoinHelper.getQuarter());
+        vendingMachine.insert(CoinHelper.getQuarter());
+        vendingMachine.insert(CoinHelper.getQuarter());
         vendingMachine.selectProduct(Products.CHIPS);
 
         assertEquals(0.25, calculateSumOfReturn(vendingMachine.checkCoinReturn()));
@@ -43,13 +38,13 @@ public class MakeChangeTest {
 
     @Test
     public void given_multipleDifferentCoinsMoreThanProductPrice_when_selectProduct_then_RemainingCoinReturned() {
-        VendingMachine vendingMachine = getBasicVendingMachine();
-        vendingMachine.insert(coinHelper.getQuarter());
+        VendingMachine vendingMachine = getStockedVendingMachine();
+        vendingMachine.insert(CoinHelper.getQuarter());
         for (int i = 0; i < 10 ; i++) {
-            vendingMachine.insert(coinHelper.getDime());
+            vendingMachine.insert(CoinHelper.getDime());
         }
         for (int i = 0; i < 5 ; i++) {
-            vendingMachine.insert(coinHelper.getNickel());
+            vendingMachine.insert(CoinHelper.getNickel());
         }
         vendingMachine.selectProduct(Products.COLA);
 
@@ -58,16 +53,16 @@ public class MakeChangeTest {
 
     @Test
     public void given_invalidCoinsAndDifferentCoinsMoreThanProductPrice_when_selectProduct_then_AllCoinReturned() {
-        VendingMachine vendingMachine = getBasicVendingMachine();
-        Coin invalidCoin = coinHelper.getPenny();
+        VendingMachine vendingMachine = getStockedVendingMachine();
+        Coin invalidCoin = CoinHelper.getPenny();
 
         vendingMachine.insert(invalidCoin);
-        vendingMachine.insert(coinHelper.getQuarter());
+        vendingMachine.insert(CoinHelper.getQuarter());
         for (int i = 0; i < 10 ; i++) {
-            vendingMachine.insert(coinHelper.getDime());
+            vendingMachine.insert(CoinHelper.getDime());
         }
         for (int i = 0; i < 5 ; i++) {
-            vendingMachine.insert(coinHelper.getNickel());
+            vendingMachine.insert(CoinHelper.getNickel());
         }
         vendingMachine.selectProduct(Products.COLA);
 

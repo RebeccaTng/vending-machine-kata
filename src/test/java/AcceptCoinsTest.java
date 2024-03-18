@@ -1,3 +1,5 @@
+import helpers.CoinHelper;
+import helpers.VendingMachineHelper;
 import org.example.Coin;
 import org.example.CoinValidator;
 import org.example.Products;
@@ -12,51 +14,39 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AcceptCoinsTest {
 
-    CoinHelper coinHelper = new CoinHelper();
-
-    private VendingMachine getBasicVendingMachine() {
-        CoinValidator coinValidator = new CoinValidator(0.25f, 0.05f);
-        Map<Products, Integer> availableProducts = new HashMap<>(Map.ofEntries(
-                Map.entry(Products.COLA, 10),
-                Map.entry(Products.CANDY, 5),
-                Map.entry(Products.CHIPS, 1)
-        ));
-        return new VendingMachine(coinValidator, availableProducts);
-    }
-
     @Test
     public void given_validCoin_when_vendingMachineReceivesCoin_then_coinAcceptedAndDisplayUpdated() {
-        VendingMachine vendingMachine = getBasicVendingMachine();
+        VendingMachine vendingMachine = VendingMachineHelper.getStockedVendingMachine();
 
-        vendingMachine.insert(coinHelper.getNickel());
+        vendingMachine.insert(CoinHelper.getNickel());
 
         assertEquals("$0.05", vendingMachine.seeDisplay());
     }
 
     @Test
     public void given_invalidCoin_when_vendingMachineReceivesCoin_then_displayRemainUnchanged() {
-        VendingMachine vendingMachine = getBasicVendingMachine();
-        vendingMachine.insert(coinHelper.getPenny());
+        VendingMachine vendingMachine = VendingMachineHelper.getStockedVendingMachine();
+        vendingMachine.insert(CoinHelper.getPenny());
         assertEquals("INSERT COIN", vendingMachine.seeDisplay());
 
-        vendingMachine.insert(coinHelper.getNickel());
-        vendingMachine.insert(coinHelper.getPenny());
+        vendingMachine.insert(CoinHelper.getNickel());
+        vendingMachine.insert(CoinHelper.getPenny());
         assertEquals("$0.05", vendingMachine.seeDisplay());
     }
 
     @Test
     public void given_noCoins_when_vendingMachineUsed_then_showInsertCoinOnDisplay() {
-        VendingMachine vendingMachine = getBasicVendingMachine();
+        VendingMachine vendingMachine = VendingMachineHelper.getStockedVendingMachine();
 
         assertEquals("INSERT COIN", vendingMachine.seeDisplay());
     }
 
     @Test
     public void given_invalidCoin_when_vendingMachineReceivesCoin_then_coinReturnedInCoinReturn() {
-        VendingMachine vendingMachine = getBasicVendingMachine();
-        Coin pennyCoin1 = coinHelper.getPenny();
-        Coin pennyCoin2 = coinHelper.getPenny();
-        Coin nickelCoin = coinHelper.getNickel();
+        VendingMachine vendingMachine = VendingMachineHelper.getStockedVendingMachine();
+        Coin pennyCoin1 = CoinHelper.getPenny();
+        Coin pennyCoin2 = CoinHelper.getPenny();
+        Coin nickelCoin = CoinHelper.getNickel();
 
         vendingMachine.insert(pennyCoin1);
         vendingMachine.insert(nickelCoin);
