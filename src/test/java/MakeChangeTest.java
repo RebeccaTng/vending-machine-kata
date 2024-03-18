@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MakeChangeTest {
 
@@ -53,5 +54,25 @@ public class MakeChangeTest {
         vendingMachine.selectProduct(Products.COLA);
 
         assertEquals(0.5, calculateSumOfReturn(vendingMachine.checkCoinReturn()));
+    }
+
+    @Test
+    public void given_invalidCoinsAndDifferentCoinsMoreThanProductPrice_when_selectProduct_then_AllCoinReturned() {
+        VendingMachine vendingMachine = getBasicVendingMachine();
+        Coin invalidCoin = coinHelper.getPenny();
+
+        vendingMachine.insert(invalidCoin);
+        vendingMachine.insert(coinHelper.getQuarter());
+        for (int i = 0; i < 10 ; i++) {
+            vendingMachine.insert(coinHelper.getDime());
+        }
+        for (int i = 0; i < 5 ; i++) {
+            vendingMachine.insert(coinHelper.getNickel());
+        }
+        vendingMachine.selectProduct(Products.COLA);
+
+        List<Coin> returnedCoins = vendingMachine.checkCoinReturn();
+        assertTrue(returnedCoins.contains(invalidCoin));
+        assertEquals(0.5, calculateSumOfReturn(returnedCoins));
     }
 }
