@@ -1,14 +1,10 @@
 import helpers.CoinHelper;
 import helpers.VendingMachineHelper;
 import org.example.Coin;
-import org.example.CoinValidator;
-import org.example.Products;
 import org.example.VendingMachine;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
