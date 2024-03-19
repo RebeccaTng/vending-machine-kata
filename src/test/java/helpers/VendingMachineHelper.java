@@ -27,4 +27,14 @@ public class VendingMachineHelper {
         ));
         return new VendingMachine(coinValidator, availableProducts);
     }
+
+    public static VendingMachine getOutOfStockVendingMachine() {
+        CoinValidator coinValidator = new CoinValidator(0.25f, 0.05f);
+        Map<Products, Integer> availableProducts = new HashMap<>(Map.ofEntries(
+                Map.entry(Products.COLA, 0),
+                Map.entry(Products.CANDY, 0),
+                Map.entry(Products.CHIPS, 0)
+        ));
+        return new VendingMachine(coinValidator, availableProducts);
+    }
 }
